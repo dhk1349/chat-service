@@ -31,9 +31,11 @@ To get started with this project, follow these steps:
    Terminal 1:
 
    python main.py
+   
    Terminal 2:
 
    ollama serve
+
    Terminal 3:
 
    ollama run llama3:8b-instruct-q2_K
