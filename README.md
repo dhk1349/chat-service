@@ -43,8 +43,11 @@ Note: The current chatbot is running with the llama3:8b-instruct-q2_K model.
 ## ✅ To Do
 
 1. Use DB to store userId and sessionId and chatlogs.
+   
 2. Test on a larger models for better chat experience.
+
 3. Deploy the application to a production server for external access.
+
 4. Integrating additional features and improvements, such as improved error handling, better security measures, and performance optimizations.
 
 ## ✍️ Remarks
