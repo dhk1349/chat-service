@@ -4,6 +4,12 @@
   <img width="524" alt="chatscreen" src="https://github.com/dhk1349/chat-service/assets/41980618/d0029e06-a14b-4d83-a69b-0ba21d3546a4">
 </div>
 
+
+
+https://github.com/dhk1349/chat-service/assets/41980618/ca1bc1e2-a8f5-41db-bd6c-272c8cabb406
+
+
+
 This is a chatbot project that consists of two separate servers: a chat server and a front server. The front server is responsible for handling the user interface, while the chat server handles the chatbot functionality.
 
 ## 🚀 Getting Started
@@ -34,11 +40,9 @@ To get started with this project, follow these steps:
    
    Terminal 2:
 
-   ollama serve
+   install llama3:8b-instruct-q2_K and start ollama server 
 
-   Terminal 3:
-
-   ollama run llama3:8b-instruct-q2_K
+   **OR use Claude API**
    
 Note: The current chatbot is running with the llama3:8b-instruct-q2_K model.
 
