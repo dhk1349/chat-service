@@ -1,11 +1,5 @@
 # 🤖 Chat Service
 
-<div align="center">
-  <img width="524" alt="chatscreen" src="https://github.com/dhk1349/chat-service/assets/41980618/d0029e06-a14b-4d83-a69b-0ba21d3546a4">
-</div>
-
-
-
 https://github.com/dhk1349/chat-service/assets/41980618/ca1bc1e2-a8f5-41db-bd6c-272c8cabb406
 
 
