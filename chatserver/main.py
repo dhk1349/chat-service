@@ -8,6 +8,8 @@ import re
 import json
 import requests
 
+import anthropic
+
 regex = r'^https?://localhost(:\d+)?$'
 
 
@@ -33,6 +35,8 @@ chat_logs: Dict[str, list] = {}
 class ChatMessage(BaseModel):
     session_id: str
     message: str
+    api_key: str
+    api: str
 
 class ChatResponse(BaseModel):
     sender: str
@@ -44,25 +48,34 @@ class ChatResponse(BaseModel):
 async def chat(message: ChatMessage):
     session_id = message.session_id
     user_message = message.message
+    api = message.api
+    api_key = message.api_key
 
     # Load your language model here and generate a response
     # response_text = generate_response(user_message)
     
     # Store the chat log
     if session_id not in chat_logs:
-        chat_logs[session_id] = [{"role":"system", "content": "한글만 사용해."}, {"role": "assistant", "content":"안녕하세요. 무엇을 도와드릴까요?"}]
+        chat_logs[session_id] = [{"role": "assistant", "content":"안녕하세요. 무엇을 도와드릴까요?"}]
     message_id = len(chat_logs[session_id]) + 1
     chat_logs[session_id].append({"role": "user", "content": user_message})
     print(session_id)
     print(chat_logs[session_id])
 
-    response = llama_chat(chat_logs[session_id])
-    response_text = response["content"]
-    chat_logs[session_id].append({"role": "assistant", "content": response_text})
+    if api=='local:llama3:8b-instruct-q2_K':
+        response = llama_chat(chat_logs[session_id])
+        response = response["content"]
+    elif api=='claude':
+        response = claude_chat(chat_logs[session_id][1:], api_key)
+    else: 
+        reponse = "unexpected api request warning from system!"
+
+    
+    chat_logs[session_id].append({"role": "assistant", "content": response})
 
     response = ChatResponse(
         sender="bot",
-        text=response_text,
+        text=response,
         id=message_id
     )
     return response.dict()
@@ -95,6 +108,30 @@ def llama_chat(messages):
                 message["content"] = output
             return message
 
+def claude_chat(messages, api_key):
+    headers = {
+    "X-Api-Key": api_key,
+    "anthropic-version": "2023-06-01",
+    "content-type": "application/json",
+    }
+
+    data = {
+        "model": "claude-3-opus-20240229",
+        "max_tokens": 200,
+        "messages": messages,
+    }
+
+    response = requests.post("https://api.anthropic.com/v1/messages", headers=headers, json=data)
+
+    if response.status_code == 200:
+        result = response.json()
+        print(f"{result["content"]} {result['model']}")
+        return result["content"][0]["text"]
+    else:
+        print(f"Error: {response.status_code} - {response.text}")
+
+        return {"content": "error occured from cluade api."}
+    
 
 # Function to generate a response using your language model
 def generate_response(message):
